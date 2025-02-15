@@ -27,18 +27,20 @@ public class AddCategoryController {
     public String addCategory(@RequestParam("categoryName") List<String> categoryNames,
                               @RequestParam("folderId") Long folderId, Model model) {
 
-       List<TaskCategories> newCats = new ArrayList<>();
+        Folders folder = foldersRepository.findById(folderId).orElse(null);
+
+       List<TaskCategories> existingCats = folder.getCategories();
 
         for (String categoryName : categoryNames) {
             TaskCategories taskCategories = new TaskCategories();
             taskCategories.setName(categoryName);
             taskCategoriesRepository.save(taskCategories);
-            newCats.add(taskCategories);
+            existingCats.add(taskCategories);
         }
 
-        Folders folder = foldersRepository.findById(folderId).orElse(null);
+
         if (folder != null) {
-            folder.setCategories(newCats);
+            folder.setCategories(existingCats);
         }
         if (folder != null) {
             foldersRepository.save(folder);
