@@ -53,6 +53,9 @@
                     <input type="text" name="taskName" class="form-control">
                     <br>
                     <textarea rows="6" name="taskDescription" class="form-control"></textarea>
+
+                    <br>
+
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-success">Add</button>
 
@@ -96,7 +99,13 @@
     <!-- Categories + Add Category Button in the same row -->
     <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
         <div th:each="category : ${folder.getCategories()}">
-            <a class="btn btn-primary" th:text="${category.getName()} + ' X'"></a>
+            <form method="post" th:action="@{'/deleteCategory/' + ${category.getId()}}">
+
+            <input type="hidden" name="folderId" th:object = "${folder}" th:value="${folder.getId()}">
+            <button type="submit" class="btn btn-primary" th:text="${category.getName()} + ' x'"></button>
+
+            </form>
+
         </div>
 
         <!-- Add Category Button -->
@@ -139,6 +148,19 @@
 
         </tbody>
     </table>
+</div>
+
+<div class="container">
+
+
+    <form  method="post" th:object = "${folder}" th:action="@{'/deleteFolder/' + ${folder.getId()}}">
+
+        <input type="hidden" name="folderId" th:value="${folder.getId()}">
+
+        <button type="submit" class="btn btn-danger">Delete Folder</button>
+
+    </form>
+
 </div>
 
 
